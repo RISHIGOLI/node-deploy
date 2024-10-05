@@ -12,9 +12,9 @@ server.use(cors())
 
 server.use('/api/products', ProductRouter)
 server.use('/api/tasks', TaskRouter)
-server.use(express.static(path.join(__dirname, process.env.PUBLICDIR)))
+server.use(express.static(path.resolve(__dirname, process.env.PUBLICDIR)))
 server.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, process.env.PUBLICDIR, 'index.html'));
+    res.sendFile(path.resolve(__dirname, process.env.PUBLICDIR, 'index.html'));
 });
 
 async function connectDB() {
