@@ -19,7 +19,7 @@
             "dest": "dist/index.html"
         },
         {
-            "src": "/(.*)\\.(js|css|map|png|jpg|svg|webp|gif)",
+            "src": "/assets/(.*)",
             "dest": "/dist/assets/$1"
         },
         {
