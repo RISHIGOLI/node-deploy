@@ -1,40 +1,38 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const cors = require('cors')
-const ProductRouter = require('./routers/product')
-const TaskRouter = require('./routers/task')
-const path = require('path')
-require('dotenv').config()
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const ProductRouter = require('./routers/product');
+const TaskRouter = require('./routers/task');
+const path = require('path');
+require('dotenv').config();
 
-const server = express()
-server.use(express.json())
-server.use(cors())
+const server = express();
+server.use(express.json());
+server.use(cors());
 
-server.use('/api/products', ProductRouter)
-server.use('/api/tasks', TaskRouter)
-server.use(express.static(path.resolve(__dirname, process.env.PUBLICDIR)))
+// Serve APIs
+server.use('/api/products', ProductRouter);
+server.use('/api/tasks', TaskRouter);
+
+// Serve static assets
+server.use(express.static(path.resolve(__dirname, process.env.PUBLICDIR))); // For serving JS, CSS files
+
+// Catch-all route for serving index.html for other routes
 server.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, process.env.PUBLICDIR, 'index.html'));
+    res.sendFile(path.resolve(__dirname, process.env.PUBLICDIR, '../index.html'));  // Adjust path to reach the correct index.html
 });
 
+// MongoDB connection
 async function connectDB() {
-    // try {
-    await mongoose.connect('mongodb+srv://rishi:rishi6823@cluster0.lbibhkq.mongodb.net/nodejs')
-    //     server.listen(8080, (req, res) => {
-    //         console.log('server started')
-    //     })
-    //     console.log('database connected')
-    //     console.log(process.env.PUBLICDIR)
-    // } catch (error) {
-    //     console.log(error)
-    // }
+    await mongoose.connect(process.env.MONGO_URI);
 }
 
 connectDB()
-    .then((response) => {
-        // console.log('database connected',response)
-        server.listen(8080, (req, res) => {
-            console.log('server started')
-        })
+    .then(() => {
+        server.listen(8080, () => {
+            console.log('Server started on port 8080');
+        });
     })
-    .catch((error) => { console.log(error) })
+    .catch((error) => {
+        console.log(error);
+    });
