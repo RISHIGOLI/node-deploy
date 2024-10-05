@@ -32,7 +32,7 @@ async function connectDB() {
 
 connectDB()
     .then((response) => {
-        console.log('database connected',response)
+        // console.log('database connected',response)
         server.listen(8080, (req, res) => {
             console.log('server started')
         })
